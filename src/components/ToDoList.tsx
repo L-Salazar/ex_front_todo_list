@@ -1,17 +1,23 @@
 import { useState } from "react";
+import './ToDoList.css';
 
 interface Tarefa {
     id: number
-    title: string
+    name: string
 }
 
 const ToDoList = () => {
 
     const [tarefas, setTarefas] = useState<Array<Tarefa>>([])
+    const [data, setTarefa] = useState<string>('');
 
-    const adicionarTarefa = (index: number) => {
+    const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTarefa(e.target.value)
+    }
+
+    const adicionarTarefa = (index: number, title: string) => {
         setTarefas([...tarefas, {
-            title: 'teste ' + index,
+            name: title,
             id: index
         }])
         console.log(tarefas)
@@ -22,18 +28,21 @@ const ToDoList = () => {
         setTarefas(newTarefas)
     }
 
-    console.log(tarefas)
-
     return (
         <>
             <h1> Lista de Tarefas </h1>
             {tarefas.map((tarefa, index) => (
                 <div key={index}>
-                    <p>Tarefa: {tarefa.title}</p>
-                    <button onClick={() => removerTarefa(index)}> <i className="fa fa-trash"></i> Remover</button>
+                    <p>Tarefa: {tarefa.name}</p>
+                    <button className="btn-delete" onClick={() => removerTarefa(index)}> <i></i> Remover</button>
                 </div>
             ))}
-            <button onClick={() => adicionarTarefa(tarefas.length)}>
+            <br></br>
+            <label>
+                <input type='text' id='tarefa' name='tarefa' value={data} onChange={inputChange} /><br />
+            </label>
+            <br></br>
+            <button className="btn-add" onClick={() => adicionarTarefa(tarefas.length, data)}>
                 Adicionar tarefa
             </button>
         </>
